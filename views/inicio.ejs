@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Contactos</title>
+</head>
+<body>
+    <h1>Agenda de Contactos</h1>
+    <a href="/contactos/nuevo" style="display:inline-block; margin-bottom: 20px;">Añadir Contacto</a>
+    
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+        </tr>
+        <% contactos.forEach(function(contacto) { %>
+            <tr>
+                <td><%= contacto.nombre %></td>
+                <td><%= contacto.apellidos %></td>
+                <td><%= contacto.telefono %></td>
+                <td><%= contacto.email %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>
