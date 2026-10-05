@@ -103,3 +103,20 @@ button {
 button:hover {
     background-color: #27ae60;
 }
+
+.btn-editar {
+    background-color: #f39c12;
+    padding: 8px 12px;
+    margin-bottom: 0;
+}
+.btn-editar:hover {
+    background-color: #d68910;
+}
+.btn-eliminar {
+    background-color: #e74c3c;
+    width: auto;
+    padding: 8px 12px;
+}
+.btn-eliminar:hover {
+    background-color: #c0392b;
+}

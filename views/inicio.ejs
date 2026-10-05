@@ -9,21 +9,31 @@
     <h1>Agenda de Contactos</h1>
     <a href="/contactos/nuevo" style="display:inline-block; margin-bottom: 20px;">Añadir Contacto</a>
     
-    <table border="1" cellpadding="10" cellspacing="0">
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Acciones</th>
+    </tr>
+    <% contactos.forEach(function(contacto) { %>
         <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Teléfono</th>
-            <th>Email</th>
+            <td><%= contacto.nombre %></td>
+            <td><%= contacto.apellidos %></td>
+            <td><%= contacto.telefono %></td>
+            <td><%= contacto.email %></td>
+            <td>
+                <!-- Botón Editar -->
+                <a href="/contactos/editar/<%= contacto.id %>" class="btn-editar">Editar</a>
+                
+                <!-- Botón Eliminar -->
+                <form action="/contactos/eliminar/<%= contacto.id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-eliminar" onclick="return confirm('¿Seguro que quieres borrar este contacto?');">Eliminar</button>
+                </form>
+            </td>
         </tr>
-        <% contactos.forEach(function(contacto) { %>
-            <tr>
-                <td><%= contacto.nombre %></td>
-                <td><%= contacto.apellidos %></td>
-                <td><%= contacto.telefono %></td>
-                <td><%= contacto.email %></td>
-            </tr>
-        <% }); %>
-    </table>
+    <% }); %>
+</table>
 </body>
 </html>
