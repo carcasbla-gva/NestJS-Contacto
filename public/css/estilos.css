@@ -16,7 +16,7 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Estilos para los enlaces / botones */
+/* Estilos para los enlaces / botones generales */
 a {
     display: inline-block;
     background-color: #3498db;
@@ -53,6 +53,7 @@ th {
 td {
     padding: 15px;
     border-bottom: 1px solid #eee;
+    vertical-align: middle; /* Alinea el contenido de las celdas al centro */
 }
 
 tr:last-child td {
@@ -63,7 +64,7 @@ tr:hover {
     background-color: #f9f9f9;
 }
 
-/* Estilos para el formulario */
+/* Estilos para el formulario principal (Crear / Editar) */
 form {
     background-color: white;
     padding: 30px;
@@ -87,6 +88,7 @@ input[type="email"] {
     box-sizing: border-box; /* Para que el padding no desborde el ancho */
 }
 
+/* Botón principal de los formularios */
 button {
     background-color: #2ecc71;
     color: white;
@@ -104,19 +106,34 @@ button:hover {
     background-color: #27ae60;
 }
 
+/* --- ESTILOS ESPECÍFICOS PARA LOS BOTONES DE ACCIÓN EN LA TABLA --- */
+
 .btn-editar {
     background-color: #f39c12;
     padding: 8px 12px;
     margin-bottom: 0;
+    margin-right: 5px; /* Separación con el botón eliminar */
 }
+
 .btn-editar:hover {
     background-color: #d68910;
 }
+
 .btn-eliminar {
     background-color: #e74c3c;
     width: auto;
     padding: 8px 12px;
 }
+
 .btn-eliminar:hover {
     background-color: #c0392b;
+}
+
+/* Quitar los estilos del formulario principal al botón de eliminar dentro de la tabla */
+td form {
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
+    display: inline-block;
 }
