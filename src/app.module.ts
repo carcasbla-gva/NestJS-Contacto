@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
-import { createObserveModule } from '@nestjs/observe';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Contacto } from './contactos/entities/contacto.entity.js';
+import { ContactosModule } from './contactos/contactos.module.js';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { ContactosModule } from './contactos/contactos.module.js';
-
-export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
-    // Distributed tracing, auto-correlated logs, request/job metrics, error
-    // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
-    ObserveModule.forRoot({
-      appKey: 'YOUR_APP_KEY',
-      appSecret: 'YOUR_APP_SECRET',
-      serviceId: 'nest-js-contacto',
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'root', // <-- Cambia esto
+      password: 'root', // <-- Cambia esto
+      database: 'contactos_db', // <-- Cambia esto
+      entities: [Contacto],
+      synchronize: true, // Automáticamente crea la tabla si no existe
     }),
     ContactosModule,
   ],
