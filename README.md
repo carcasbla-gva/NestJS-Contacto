@@ -10,6 +10,22 @@ Este proyecto es una aplicación web full-stack para la gestión de contactos (C
 - **ORM:** TypeORM
 - **Motor de Plantillas:** EJS (HTML/CSS)
 
+## 🧠 ¿Cómo funciona NestJS? (Guía rápida)
+
+Para quienes nunca han trabajado con NestJS, se trata de un framework para Node.js que obliga a escribir código muy limpio y estructurado. Su arquitectura está fuertemente inspirada en Angular, basándose en la **Inyección de Dependencias** y separando las responsabilidades en tres piezas clave:
+
+1. **Módulos (`*.module.ts`):** 
+   Son los bloques organizativos de la aplicación. Cada característica (por ejemplo, los "Contactos") tiene su propio módulo que agrupa sus controladores y servicios, manteniendo el código aislado y ordenado.
+
+2. **Controladores (`*.controller.ts`):** 
+   Actúan como los "recepcionistas" de la aplicación. Se encargan de escuchar las peticiones HTTP que llegan desde el navegador (como un `GET` para ver una página o un `POST` al enviar un formulario). No procesan datos complejos; simplemente delegan el trabajo al Servicio y devuelven la respuesta (en nuestro caso, renderizan las vistas HTML con EJS).
+
+3. **Servicios / Providers (`*.service.ts`):** 
+   Aquí es donde reside la "lógica de negocio". El servicio es el trabajador real que realiza las tareas pesadas: comunicarse con la base de datos (usando TypeORM), validar información y aplicar las reglas de la aplicación.
+
+**El flujo básico de este proyecto es:**
+El usuario entra a `/contactos` ➡️ El **Controlador** intercepta la petición ➡️ Pide al **Servicio** que busque los contactos en PostgreSQL ➡️ El Servicio se los devuelve ➡️ El Controlador se los pasa a la vista `.ejs` para que el usuario los vea en pantalla.
+
 ## 🗄️ Configuración de la Base de Datos (PostgreSQL)
 
 Para que el ORM de NestJS (TypeORM) pueda conectarse y crear las tablas automáticamente, es necesario que el motor de base de datos esté instalado y configurado en Ubuntu.
@@ -55,6 +71,7 @@ ALTER DATABASE contactos_db OWNER TO root;
 
 Hola Víctor, en el siguiente enlace puedes ver el historial completo de la conversación y el proceso de razonamiento guiado mediante IA para estructurar, configurar y programar la práctica:
 
-🔗 **[Historial del proceso de desarrollo](https://share.gemini.google/vYq8MFobz2r1)**
+🔗 **[Historial del proceso de desarrollo](https://share.gemini.google/bZ7LZcYpRkPs)**
+
 ---
 *Desarrollado por Carlos Javier Castaños Blanco - 2º DAW*
