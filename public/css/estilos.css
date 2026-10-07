@@ -2,10 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* Modo Claro (Por Defecto) */
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --primary-light: #eef2ff;
+    /* Modo Claro (Tema Verde Esmeralda) */
+    --primary: #059669;
+    --primary-hover: #047857;
+    --primary-light: #ecfdf5;
     --secondary: #64748b;
     --secondary-hover: #475569;
     --success: #10b981;
@@ -21,7 +21,7 @@
     --bg-toolbar: #fafafa;
     --bg-input: #ffffff;
     --bg-tab-inactive: #f8fafc;
-    --bg-hover: #f8faff;
+    --bg-hover: #f0fdf4;
     --bg-pill: #f1f5f9;
     --bg-table-header: #f8fafc;
     
@@ -43,9 +43,9 @@
    MODO OSCURO (DARK THEME)
    ========================================== */
 [data-theme="dark"] {
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --primary-light: rgba(99, 102, 241, 0.18);
+    --primary: #10b981;
+    --primary-hover: #059669;
+    --primary-light: rgba(16, 185, 129, 0.18);
     --secondary: #94a3b8;
     --secondary-hover: #cbd5e1;
     --success: #10b981;
@@ -61,7 +61,7 @@
     --bg-toolbar: #111827;
     --bg-input: #0b0f19;
     --bg-tab-inactive: #0f172a;
-    --bg-hover: #1e293b;
+    --bg-hover: #132e27;
     --bg-pill: #1e293b;
     --bg-table-header: #111827;
     
@@ -131,10 +131,10 @@ body {
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
     color: white;
     border-radius: var(--radius-md);
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .nav-links {
@@ -179,7 +179,7 @@ body {
 .user-avatar-sm {
     width: 28px;
     height: 28px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
     color: white;
     font-weight: 700;
     font-size: 0.8rem;
@@ -294,14 +294,14 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
-    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
     transform: translateY(-1px);
 }
 
@@ -424,7 +424,7 @@ body {
 .search-box input:focus {
     border-color: var(--primary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
 .search-icon {
@@ -519,7 +519,7 @@ tbody tr:hover {
     width: 40px;
     height: 40px;
     border-radius: var(--radius-full);
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
     color: white;
     font-weight: 700;
     font-size: 0.9rem;
@@ -527,7 +527,7 @@ tbody tr:hover {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
 }
 
 .contact-info-name {
@@ -743,20 +743,6 @@ tbody tr:hover {
     padding: 24px;
 }
 
-.file-drop-area {
-    border: 2px dashed var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 30px 20px;
-    text-align: center;
-    background: var(--bg-toolbar);
-    cursor: pointer;
-    transition: border-color 0.2s;
-}
-
-.file-drop-area:hover {
-    border-color: var(--primary);
-}
-
 /* Estado vacío */
 .empty-state {
     text-align: center;
@@ -831,7 +817,7 @@ tbody tr:hover {
 .form-control:focus {
     border-color: var(--primary);
     outline: none;
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
 }
 
 .form-actions {
@@ -875,13 +861,13 @@ tbody tr:hover {
     width: 54px;
     height: 54px;
     margin: 0 auto 16px auto;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
     color: white;
     border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
 }
 
 .auth-tabs {
