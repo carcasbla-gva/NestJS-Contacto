@@ -16,4 +16,10 @@ export class Contacto {
 
     @Column()
     email: string;
+
+    @Column({ nullable: true, default: '' })
+    provincia: string;
+
+    @Column({ nullable: true, default: '' })
+    pais: string;
 }

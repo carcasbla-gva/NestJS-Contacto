@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/estilos.css">
+    <script src="/js/theme.js"></script>
+    <title>Crear Cuenta - Agenda</title>
+</head>
+<body>
+    <!-- Botón flotante de tema -->
+    <div class="theme-toggle-floating">
+        <button type="button" class="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
+            <span class="theme-toggle-icon"></span>
+        </button>
+    </div>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-badge-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7.5" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+                <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Agenda</h1>
+                <p style="font-size: 0.88rem; color: var(--text-muted);">Crea tu cuenta de usuario en segundos</p>
+            </div>
+
+            <!-- Pestañas para cambiar fácilmente de ruta sin usar URL -->
+            <div class="auth-tabs">
+                <a href="/login" class="auth-tab">Iniciar Sesión</a>
+                <a href="/registro" class="auth-tab active">Crear Cuenta</a>
+            </div>
+
+            <div class="auth-body">
+                <% if (error) { %>
+                    <div class="alert alert-error">
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+
+                <form action="/registro" method="POST" style="padding: 0; box-shadow: none; background: transparent;">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: Carlos Castaños" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Nombre de Usuario (Login)</label>
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Ej: carlos" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Mínimo 4 caracteres" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-block" style="margin-top: 20px;">
+                        Crear mi Cuenta
+                    </button>
+                </form>
+            </div>
+
+            <div class="auth-footer">
+                ¿Ya tienes una cuenta creada? <a href="/login">Inicia sesión aquí</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

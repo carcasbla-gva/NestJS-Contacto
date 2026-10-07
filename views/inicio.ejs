@@ -2,38 +2,183 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/estilos.css">
-    <title>Mis Contactos</title>
+    <script src="/js/theme.js"></script>
+    <title>Mis Contactos - Agenda</title>
 </head>
 <body>
-    <h1>Agenda de Contactos</h1>
-    <a href="/contactos/nuevo" style="display:inline-block; margin-bottom: 20px;">Añadir Contacto</a>
-    
-<table border="1" cellpadding="10" cellspacing="0">
-    <tr>
-        <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>Teléfono</th>
-        <th>Email</th>
-        <th>Acciones</th>
-    </tr>
-    <% contactos.forEach(function(contacto) { %>
-        <tr>
-            <td><%= contacto.nombre %></td>
-            <td><%= contacto.apellidos %></td>
-            <td><%= contacto.telefono %></td>
-            <td><%= contacto.email %></td>
-            <td>
-                <!-- Botón Editar -->
-                <a href="/contactos/editar/<%= contacto.id %>" class="btn-editar">Editar</a>
+    <!-- Navbar Global -->
+    <nav class="main-navbar">
+        <div class="nav-container">
+            <a href="/contactos" class="brand-logo">
+                <span class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </span>
+                <span>Agenda</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="/contactos" class="nav-link active">Contactos</a>
+                <a href="/contactos/nuevo" class="nav-link">+ Nuevo</a>
+
+                <!-- Botón Modo Oscuro / Claro -->
+                <button type="button" class="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar tema">
+                    <span class="theme-toggle-icon"></span>
+                </button>
+
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <div class="user-profile-pill">
+                        <span class="user-avatar-sm"><%= (user.nombre || user.username || 'U').charAt(0) %></span>
+                        <span class="user-name-text"><%= user.nombre || user.username %></span>
+                    </div>
+                <% } %>
                 
-                <!-- Botón Eliminar -->
-                <form action="/contactos/eliminar/<%= contacto.id %>" method="POST" style="display:inline;">
-                    <button type="submit" class="btn-eliminar" onclick="return confirm('¿Seguro que quieres borrar este contacto?');">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-    <% }); %>
-</table>
+                <a href="/logout" class="btn-logout" title="Cerrar sesión">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Agenda de Contactos</h1>
+                <p class="page-subtitle">Gestiona y consulta la lista completa de tus contactos</p>
+            </div>
+            <div class="header-actions">
+                <a href="/contactos/nuevo" class="btn btn-primary">
+                    <span>+</span>
+                    <span>Nuevo Contacto</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <!-- Barra de herramientas con buscador -->
+            <div class="table-toolbar">
+                <div class="search-box">
+                    <span class="search-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </span>
+                    <input type="text" id="buscador" placeholder="Buscar por nombre, teléfono, provincia, país..." onkeyup="filtrarContactos()">
+                </div>
+                <div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
+                        Total: <strong id="total-badge"><%= contactos.length %></strong> contacto(s)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Tabla responsiva -->
+            <div class="table-responsive">
+                <table id="tabla-contactos">
+                    <thead>
+                        <tr>
+                            <th>Contacto</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Ubicación</th>
+                            <th style="text-align: right;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (contactos.length === 0) { %>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <h3 class="empty-title">No hay contactos todavía</h3>
+                                        <p class="empty-desc">Comienza creando tu primer contacto para tenerlo siempre a mano.</p>
+                                        <a href="/contactos/nuevo" class="btn btn-primary">+ Añadir mi primer contacto</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% } %>
+                        <% contactos.forEach(function(contacto) { %>
+                            <tr class="fila-contacto">
+                                <td>
+                                    <div class="contact-cell">
+                                        <div class="contact-avatar">
+                                            <%= (contacto.nombre ? contacto.nombre.charAt(0) : '') + (contacto.apellidos ? contacto.apellidos.charAt(0) : '') %>
+                                        </div>
+                                        <div>
+                                            <div class="contact-info-name"><%= contacto.nombre %> <%= contacto.apellidos %></div>
+                                            <div class="contact-info-sub">ID #<%= contacto.id %></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="tel:<%= contacto.telefono %>" class="pill-link" title="Llamar">
+                                        <span><%= contacto.telefono %></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="mailto:<%= contacto.email %>" class="pill-link" title="Enviar correo">
+                                        <span><%= contacto.email %></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <% if (contacto.provincia || contacto.pais) { %>
+                                        <span class="pill-link" style="background-color: var(--bg-pill);">
+                                            <span>
+                                                <%= [contacto.provincia, contacto.pais].filter(Boolean).join(', ') %>
+                                            </span>
+                                        </span>
+                                    <% } else { %>
+                                        <span style="color: var(--text-muted); font-size: 0.85rem;">-</span>
+                                    <% } %>
+                                </td>
+                                <td style="text-align: right;">
+                                    <div class="table-actions" style="justify-content: flex-end;">
+                                        <!-- Botón Editar -->
+                                        <a href="/contactos/editar/<%= contacto.id %>" class="btn-action-edit">
+                                            Editar
+                                        </a>
+                                        
+                                        <!-- Botón Eliminar -->
+                                        <form action="/contactos/eliminar/<%= contacto.id %>" method="POST" style="display:inline; margin: 0; padding: 0; background: transparent; box-shadow: none;">
+                                            <button type="submit" class="btn-action-delete" onclick="return confirm('¿Seguro que deseas eliminar a <%= contacto.nombre %> <%= contacto.apellidos %>?');">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function filtrarContactos() {
+            const input = document.getElementById('buscador');
+            const filter = input.value.toLowerCase();
+            const filas = document.querySelectorAll('.fila-contacto');
+            let visibles = 0;
+
+            filas.forEach(fila => {
+                const texto = fila.textContent.toLowerCase();
+                if (texto.includes(filter)) {
+                    fila.style.display = '';
+                    visibles++;
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+
+            const badge = document.getElementById('total-badge');
+            if (badge) {
+                badge.textContent = visibles;
+            }
+        }
+    </script>
 </body>
 </html>

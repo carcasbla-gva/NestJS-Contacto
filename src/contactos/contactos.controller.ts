@@ -1,48 +1,54 @@
-import { Controller, Get, Post, Body, Render, Res, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Render, Res, Req, Param, UseGuards } from '@nestjs/common';
 import { ContactosService } from './contactos.service.js';
-import express from 'express';
+import { AuthGuard } from '../auth/guards/auth.guard.js';
+import type { Request, Response } from 'express';
+
 
 @Controller('contactos')
+@UseGuards(AuthGuard)
 export class ContactosController {
   constructor(private readonly contactosService: ContactosService) {}
 
   @Get()
   @Render('inicio')
-  async findAll() {
+  async findAll(@Req() req: Request) {
     const contactos = await this.contactosService.findAll();
-    return { contactos }; 
+    const user = (req.session as any)?.user;
+    return { contactos, user }; 
   }
 
   @Get('nuevo')
   @Render('nuevo_contacto')
-  nuevoForm() {
-    return {};
+  nuevoForm(@Req() req: Request) {
+    const user = (req.session as any)?.user;
+    return { user };
   }
 
   @Post('nuevo')
-  async create(@Body() body: any, @Res() res: express.Response) {
+  async create(@Body() body: any, @Res() res: Response) {
     await this.contactosService.create(body);
     return res.redirect('/contactos');
   }
 
-  // NUEVO: Mostrar el formulario de edición con los datos rellenos
+  // Mostrar el formulario de edición con los datos rellenos
   @Get('editar/:id')
   @Render('editar_contacto')
-  async editarForm(@Param('id') id: string) {
+  async editarForm(@Param('id') id: string, @Req() req: Request) {
     const contacto = await this.contactosService.findOne(+id);
-    return { contacto };
+    const user = (req.session as any)?.user;
+    return { contacto, user };
   }
 
-  // NUEVO: Recibir los datos editados y guardarlos
+  // Recibir los datos editados y guardarlos
   @Post('editar/:id')
-  async update(@Param('id') id: string, @Body() body: any, @Res() res: express.Response) {
+  async update(@Param('id') id: string, @Body() body: any, @Res() res: Response) {
     await this.contactosService.update(+id, body);
     return res.redirect('/contactos');
   }
 
-  // NUEVO: Eliminar el contacto
+  // Eliminar el contacto
   @Post('eliminar/:id')
-  async remove(@Param('id') id: string, @Res() res: express.Response) {
+  async remove(@Param('id') id: string, @Res() res: Response) {
     await this.contactosService.remove(+id);
     return res.redirect('/contactos');
   }

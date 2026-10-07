@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service.js';
+import { Controller, Get, Req, Res } from '@nestjs/common';
+import type { Request, Response } from 'express';
+
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  index(@Req() req: Request, @Res() res: Response) {
+    const session = req.session as any;
+    if (session && session.user) {
+      return res.redirect('/contactos');
+    }
+    return res.redirect('/login');
   }
 }
+
