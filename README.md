@@ -71,7 +71,7 @@ ALTER DATABASE contactos_db OWNER TO root;
 
 Hola Víctor, en el siguiente enlace puedes ver el historial completo de la conversación y el proceso de razonamiento guiado mediante IA para estructurar, configurar y programar la práctica:
 
-🔗 **[Historial del proceso de desarrollo](https://share.gemini.google/bZ7LZcYpRkPs)**
+🔗 **[Historial del proceso de desarrollo](https://share.gemini.google/itUE91X5TOA0)**
 
 ---
 *Desarrollado por Carlos Javier Castaños Blanco - 2º DAW*
