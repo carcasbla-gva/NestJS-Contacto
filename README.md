@@ -82,8 +82,10 @@ ALTER DATABASE contactos_db OWNER TO root;
 
 ## 📚 Documentación Adicional
 
+- 📝 [Historial de Conversación y Desarrollo](./conversacion_desarrollo.md) (o consulta [conversacion_desarrollo.md](file:///home/alumno/Documentos/nest-js-contacto/conversacion_desarrollo.md))
 - 🔐 [Detalle de Autenticación, Seguridad y Rediseño de UI](./autenticacion_y_diseno.md) (o consulta [autenticacion_y_diseno.md](file:///home/alumno/Documentos/nest-js-contacto/autenticacion_y_diseno.md))
 - 📄 [Configuración de la Base de Datos PostgreSQL](./configuracion_bbdd.md) (o consulta [configuracion_bbdd.md](file:///home/alumno/Documentos/nest-js-contacto/configuracion_bbdd.md))
+
 
 
 ## 👨‍🏫 Notas para el profesor (Víctor Ponz)
