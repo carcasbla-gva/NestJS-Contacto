@@ -10,7 +10,11 @@ En esta etapa se ha dotado a la aplicación de:
 1. **Sistema completo de autenticación y sesiones de usuario:** Registro, inicio de sesión seguro con contraseñas encriptadas en PostgreSQL y cierre de sesión.
 2. **Protección de rutas con Guards:** Redirección automática a la pantalla de login si se intenta acceder a la gestión de contactos sin haber iniciado sesión.
 3. **Modo Oscuro / Modo Claro:** Conmutador de tema con persistencia en `localStorage` disponible en toda la aplicación.
-4. **Rediseño completo de la interfaz de usuario (UI/UX):** Navegación fluida por botones (sin depender de la barra de direcciones del navegador), buscador en tiempo real, campos de Provincia y País, avatares dinámicos y diseño limpio con iconos vectoriales SVG (sin emojis).
+4. **Rediseño completo de la interfaz de usuario (UI/UX):** Navegación fluida por botones (sin depender de la barra de direcciones del navegador), buscador en tiempo real, avatares dinámicos y diseño limpio con iconos vectoriales SVG (sin emojis).
+5. **Paginación y Ordenación:** Paginación configurable (5, 10, 20, 50 por página) con cálculo de páginas y ordenación interactiva ascendente/descendente al hacer clic en las cabeceras de la tabla.
+6. **Exportación e Importación de Contactos (CSV):** Descarga directa de la agenda en formato CSV compatible con Excel/LibreOffice y modal para importar contactos por lotes.
+
+
 
 
 
@@ -109,15 +113,15 @@ Presente en todas las vistas protegidas:
 | `src/auth/auth.module.ts` | **Creado** | Módulo de autenticación de NestJS. |
 | `views/login.ejs` | **Creado** | Vista de login con pestañas y alertas. |
 | `public/js/theme.js` | **Creado** | Lógica de detección y persistencia de tema claro/oscuro en `localStorage`. |
-| `src/contactos/entities/contacto.entity.ts` | **Modificado** | Nuevos campos `provincia` y `pais` para ubicación de contactos. |
 | `src/main.ts` | **Modificado** | Configuración del middleware de sesiones (`express-session`). |
 | `src/app.module.ts` | **Modificado** | Registro de `AuthModule` y la entidad `Usuario`. |
 | `src/app.controller.ts` | **Modificado** | Redirección de la raíz `/` a `/contactos` o `/login`. |
 | `src/contactos/contactos.controller.ts` | **Modificado** | Protección con `@UseGuards(AuthGuard)` y paso de datos de sesión. |
-| `views/inicio.ejs` | **Modificado** | Rediseño con navbar, buscador, columna de ubicación, avatares y botones. |
-| `views/nuevo_contacto.ejs` | **Modificado** | Rediseño con navbar, campos de provincia/país y botón cancelar. |
-| `views/editar_contacto.ejs` | **Modificado** | Rediseño con navbar, campos de provincia/país y botón cancelar. |
+| `views/inicio.ejs` | **Modificado** | Rediseño con navbar, buscador, avatares y botones. |
+| `views/nuevo_contacto.ejs` | **Modificado** | Rediseño con navbar y botón cancelar. |
+| `views/editar_contacto.ejs` | **Modificado** | Rediseño con navbar y botón cancelar. |
 | `public/css/estilos.css` | **Modificado** | Sistema de diseño completo con soporte nativo de modo oscuro/claro. |
+
 
 
 ---

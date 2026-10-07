@@ -10,7 +10,9 @@ Este proyecto es una aplicación web full-stack para la gestión de contactos (C
 - **ORM:** TypeORM
 - **Motor de Plantillas:** EJS (HTML/CSS)
 - **Autenticación:** `express-session` con encriptación `bcrypt` y protección mediante `AuthGuard`
+- **Gestión Avanzada:** Paginación dinámica configurable, ordenación interactiva por columnas y exportación / importación masiva de contactos en formato CSV
 - **UI/UX:** Diseño responsivo, navegación interactiva por botones, buscador en tiempo real y **Modo Oscuro / Modo Claro** con persistencia en `localStorage`
+
 
 
 ## 🧠 ¿Cómo funciona NestJS? (Guía rápida)
@@ -82,9 +84,12 @@ ALTER DATABASE contactos_db OWNER TO root;
 
 ## 📚 Documentación Adicional
 
+- 🚀 [Detalle de Funcionalidades Extra: CSV y Paginación](./funcionalidades_extra.md) (o consulta [funcionalidades_extra.md](file:///home/alumno/Documentos/nest-js-contacto/funcionalidades_extra.md))
 - 📝 [Historial de Conversación y Desarrollo](./conversacion_desarrollo.md) (o consulta [conversacion_desarrollo.md](file:///home/alumno/Documentos/nest-js-contacto/conversacion_desarrollo.md))
 - 🔐 [Detalle de Autenticación, Seguridad y Rediseño de UI](./autenticacion_y_diseno.md) (o consulta [autenticacion_y_diseno.md](file:///home/alumno/Documentos/nest-js-contacto/autenticacion_y_diseno.md))
 - 📄 [Configuración de la Base de Datos PostgreSQL](./configuracion_bbdd.md) (o consulta [configuracion_bbdd.md](file:///home/alumno/Documentos/nest-js-contacto/configuracion_bbdd.md))
+
+
 
 
 

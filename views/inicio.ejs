@@ -44,12 +44,36 @@
 
     <!-- Contenido Principal -->
     <main class="main-content">
+        <!-- Notificaciones de importación / error -->
+        <% if (typeof mensajeImportados !== 'undefined' && mensajeImportados) { %>
+            <div class="alert alert-success">
+                <span><%= mensajeImportados %></span>
+            </div>
+        <% } %>
+
+        <% if (typeof mensajeError !== 'undefined' && mensajeError) { %>
+            <div class="alert alert-error">
+                <span><%= mensajeError %></span>
+            </div>
+        <% } %>
+
         <div class="page-header">
             <div>
                 <h1 class="page-title">Agenda de Contactos</h1>
-                <p class="page-subtitle">Gestiona y consulta la lista completa de tus contactos</p>
+                <p class="page-subtitle">Gestiona, busca, exporta y organiza tus contactos</p>
             </div>
             <div class="header-actions">
+                <!-- Exportar CSV -->
+                <a href="/contactos/exportar/csv" class="btn btn-outline" title="Descargar lista en CSV">
+                    Exportar CSV
+                </a>
+
+                <!-- Importar CSV (Abre modal) -->
+                <button type="button" class="btn btn-secondary" onclick="abrirModalImportar()" title="Cargar contactos desde archivo CSV">
+                    Importar CSV
+                </button>
+
+                <!-- Nuevo Contacto -->
                 <a href="/contactos/nuevo" class="btn btn-primary">
                     <span>+</span>
                     <span>Nuevo Contacto</span>
@@ -58,8 +82,12 @@
         </div>
 
         <div class="table-card">
-            <!-- Barra de herramientas con buscador -->
-            <div class="table-toolbar">
+            <!-- Barra de herramientas con buscador y selector de límite -->
+            <form action="/contactos" method="GET" class="table-toolbar" style="margin: 0; box-shadow: none; border-radius: 0;">
+                <input type="hidden" name="sortBy" value="<%= sortBy || 'id' %>">
+                <input type="hidden" name="order" value="<%= order || 'ASC' %>">
+                <input type="hidden" name="page" value="1">
+
                 <div class="search-box">
                     <span class="search-icon">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -67,24 +95,69 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
                     </span>
-                    <input type="text" id="buscador" placeholder="Buscar por nombre, teléfono, provincia, país..." onkeyup="filtrarContactos()">
+                    <input type="text" name="search" value="<%= search || '' %>" placeholder="Buscar y presionar Enter..." autofocus>
                 </div>
-                <div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="limit-select" style="font-size: 0.85rem; color: var(--text-muted); margin: 0; font-weight: 600;">Mostrar:</label>
+                        <select id="limit-select" name="limit" onchange="this.form.submit()" style="padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-family: inherit; font-size: 0.85rem;">
+                            <option value="5" <%= limit === 5 ? 'selected' : '' %>>5</option>
+                            <option value="10" <%= limit === 10 ? 'selected' : '' %>>10</option>
+                            <option value="20" <%= limit === 20 ? 'selected' : '' %>>20</option>
+                            <option value="50" <%= limit === 50 ? 'selected' : '' %>>50</option>
+                        </select>
+                    </div>
+
                     <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
-                        Total: <strong id="total-badge"><%= contactos.length %></strong> contacto(s)
+                        Total: <strong><%= total %></strong> contacto(s)
                     </span>
                 </div>
-            </div>
+            </form>
+
+            <!-- Helper para enlaces de ordenación -->
+            <% 
+                function getSortUrl(campo) {
+                    const esCampoActual = (sortBy === campo);
+                    const siguienteOrden = (esCampoActual && order === 'ASC') ? 'DESC' : 'ASC';
+                    let url = '/contactos?page=1&limit=' + limit + '&sortBy=' + campo + '&order=' + siguienteOrden;
+                    if (search) url += '&search=' + encodeURIComponent(search);
+                    return url;
+                }
+
+                function getSortIndicator(campo) {
+                    if (sortBy === campo) {
+                        return order === 'ASC' ? ' ▲' : ' ▼';
+                    }
+                    return '';
+                }
+            %>
 
             <!-- Tabla responsiva -->
             <div class="table-responsive">
                 <table id="tabla-contactos">
                     <thead>
                         <tr>
-                            <th>Contacto</th>
-                            <th>Teléfono</th>
-                            <th>Email</th>
-                            <th>Ubicación</th>
+                            <th>
+                                <a href="<%= getSortUrl('nombre') %>" class="sort-link <%= sortBy === 'nombre' ? 'active' : '' %>" title="Ordenar por nombre">
+                                    Contacto<%= getSortIndicator('nombre') %>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="<%= getSortUrl('telefono') %>" class="sort-link <%= sortBy === 'telefono' ? 'active' : '' %>" title="Ordenar por teléfono">
+                                    Teléfono<%= getSortIndicator('telefono') %>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="<%= getSortUrl('email') %>" class="sort-link <%= sortBy === 'email' ? 'active' : '' %>" title="Ordenar por email">
+                                    Email<%= getSortIndicator('email') %>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="<%= getSortUrl('provincia') %>" class="sort-link <%= sortBy === 'provincia' ? 'active' : '' %>" title="Ordenar por ubicación">
+                                    Ubicación<%= getSortIndicator('provincia') %>
+                                </a>
+                            </th>
                             <th style="text-align: right;">Acciones</th>
                         </tr>
                     </thead>
@@ -93,9 +166,17 @@
                             <tr>
                                 <td colspan="5">
                                     <div class="empty-state">
-                                        <h3 class="empty-title">No hay contactos todavía</h3>
-                                        <p class="empty-desc">Comienza creando tu primer contacto para tenerlo siempre a mano.</p>
-                                        <a href="/contactos/nuevo" class="btn btn-primary">+ Añadir mi primer contacto</a>
+                                        <h3 class="empty-title">
+                                            <%= search ? 'No se encontraron contactos' : 'No hay contactos todavía' %>
+                                        </h3>
+                                        <p class="empty-desc">
+                                            <%= search ? 'Prueba con otro término de búsqueda o limpia el filtro.' : 'Comienza creando tu primer contacto o importa un archivo CSV.' %>
+                                        </p>
+                                        <% if (search) { %>
+                                            <a href="/contactos" class="btn btn-secondary">Limpiar búsqueda</a>
+                                        <% } else { %>
+                                            <a href="/contactos/nuevo" class="btn btn-primary">+ Añadir mi primer contacto</a>
+                                        <% } %>
                                     </div>
                                 </td>
                             </tr>
@@ -154,31 +235,92 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Barra de Paginación -->
+            <% if (total > 0) { %>
+                <%
+                    function getPageUrl(p) {
+                        let url = '/contactos?page=' + p + '&limit=' + limit + '&sortBy=' + sortBy + '&order=' + order;
+                        if (search) url += '&search=' + encodeURIComponent(search);
+                        return url;
+                    }
+                    const inicioRegistro = ((currentPage - 1) * limit) + 1;
+                    const finRegistro = Math.min(currentPage * limit, total);
+                %>
+                <div class="pagination-wrapper">
+                    <div class="pagination-info">
+                        Mostrando <strong><%= inicioRegistro %></strong> - <strong><%= finRegistro %></strong> de <strong><%= total %></strong> contactos (Página <%= currentPage %> de <%= totalPages %>)
+                    </div>
+
+                    <div class="pagination-controls">
+                        <!-- Botón Anterior -->
+                        <% if (currentPage > 1) { %>
+                            <a href="<%= getPageUrl(currentPage - 1) %>" class="pagination-btn" title="Página anterior">Anterior</a>
+                        <% } else { %>
+                            <span class="pagination-btn disabled">Anterior</span>
+                        <% } %>
+
+                        <!-- Números de página -->
+                        <% for (let p = 1; p <= totalPages; p++) { %>
+                            <% if (p === 1 || p === totalPages || (p >= currentPage - 2 && p <= currentPage + 2)) { %>
+                                <a href="<%= getPageUrl(p) %>" class="pagination-btn <%= p === currentPage ? 'active' : '' %>"><%= p %></a>
+                            <% } else if (p === currentPage - 3 || p === currentPage + 3) { %>
+                                <span class="pagination-btn disabled" style="border: none; background: transparent;">...</span>
+                            <% } %>
+                        <% } %>
+
+                        <!-- Botón Siguiente -->
+                        <% if (currentPage < totalPages) { %>
+                            <a href="<%= getPageUrl(currentPage + 1) %>" class="pagination-btn" title="Página siguiente">Siguiente</a>
+                        <% } else { %>
+                            <span class="pagination-btn disabled">Siguiente</span>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
         </div>
     </main>
 
+    <!-- Modal para Importar CSV -->
+    <div id="modal-importar" class="modal-backdrop" hidden>
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Importar Contactos (CSV)</h3>
+                <button type="button" class="modal-close-btn" onclick="cerrarModalImportar()">&times;</button>
+            </div>
+            <form action="/contactos/importar/csv" method="POST" enctype="multipart/form-data" style="margin: 0; box-shadow: none; border-radius: 0;">
+                <div class="modal-body">
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 15px;">
+                        Selecciona un archivo <code>.csv</code> con las columnas: <em>Nombre, Apellidos, Teléfono, Email, Provincia, País</em>.
+                    </p>
+                    <div class="form-group">
+                        <label for="archivo-csv">Archivo CSV *</label>
+                        <input type="file" id="archivo-csv" name="archivo" accept=".csv, text/csv" required class="form-control" style="padding: 10px;">
+                    </div>
+                </div>
+                <div class="form-actions" style="margin: 0; padding: 15px 24px; background: var(--bg-toolbar);">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModalImportar()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Subir e Importar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        function filtrarContactos() {
-            const input = document.getElementById('buscador');
-            const filter = input.value.toLowerCase();
-            const filas = document.querySelectorAll('.fila-contacto');
-            let visibles = 0;
-
-            filas.forEach(fila => {
-                const texto = fila.textContent.toLowerCase();
-                if (texto.includes(filter)) {
-                    fila.style.display = '';
-                    visibles++;
-                } else {
-                    fila.style.display = 'none';
-                }
-            });
-
-            const badge = document.getElementById('total-badge');
-            if (badge) {
-                badge.textContent = visibles;
-            }
+        function abrirModalImportar() {
+            document.getElementById('modal-importar').removeAttribute('hidden');
         }
+
+        function cerrarModalImportar() {
+            document.getElementById('modal-importar').setAttribute('hidden', '');
+        }
+
+        // Cerrar modal al hacer clic en el fondo
+        document.getElementById('modal-importar').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModalImportar();
+            }
+        });
     </script>
 </body>
 </html>
